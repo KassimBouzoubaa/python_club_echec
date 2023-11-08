@@ -1,4 +1,6 @@
 """Définition des controllers"""
+from dataclasses import dataclass
+from typing import List, Optional
 
 from models import Joueur, Match, Tour, Tournoi
 from views import View
@@ -6,29 +8,66 @@ import random
 from datetime import datetime
 
 
+main_menu_choices = [
+    "Tournois en cours",
+    "Liste des tournois",
+    "Liste des joueurs",
+    "Rapports",
+    "Sortir",
+]
+
+
+@dataclass
+class ControllerState:
+    joueurs: List[Joueur]
+    tournois: List[Tournoi]
+    tournois_en_cour: Optional[Tournoi] = None
+
+
 class Controller:
     """Implémentation du controller"""
 
-    def __init__(self, view: View, tournoi: Tournoi):
+    def __init__(self, view: View):
         """Contient un tournoi et une view"""
         self.view = view
-        self.tournoi = tournoi
+        self.state = ControllerState([], [])
+
+    def menu_selection(self):
+        choice = self.view.display_menu(main_menu_choices)
+        if choice == 1:
+            self.demarrer_tournoi()
+            self.ajouter_joueur()
+            print(self.state.tournois_en_cour)
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            pass
+        elif choice == 5:
+            print("Au revoir !")
+
 
     def demarrer_tournoi(self):
-        nom, lieu, description = self.view.prompt_pour_tournoi()
-        self.tournoi = Tournoi(
-            nom, lieu, datetime.now().date(), [], [], description_remarque=description
-        )
+        champs_tournoi = ["nom", "lieu", "description"]
+        input_tournoi = self.view.prompt_pour_tournoi(champs_tournoi)
+        nom = input_tournoi["nom"]
+        lieu = input_tournoi["lieu"]
+        description = input_tournoi["description"]
+        tournoi = Tournoi(nom, lieu, datetime.now().date(), description=description)
+        self.state.tournois_en_cour = tournoi
+        self.state.tournois_en_cour.init_tournoi()
 
     def ajouter_joueur(self):
-        while len(self.tournoi.liste_de_joueur) < 8:  # nombre de joueur maximum
-            nom, prenom, date_de_naissance = self.view.prompt_pour_joueur()
+        champs_joueur = ["nom", "prenom", "date de naissance"]
+        while len(self.state.tournois_en_cour.liste_de_joueur) < 8:
+            input_joueurs = self.view.get_user_input(champs_joueur)
+            nom = input_joueurs["nom"]
+            prenom = input_joueurs["prenom"]
+            date_de_naissance = input_joueurs["date de naissance"]
             joueur = Joueur(nom, prenom, date_de_naissance)
-            self.tournoi.liste_de_joueur.append(joueur)
 
-    def melanger_joueurs(self):
-        """Melanger les joueurs de manère aléatoire"""
-        random.shuffle(self.tournoi.liste_de_joueur)
+            self.state.tournois_en_cour.liste_de_joueur.append(joueur)
 
     def verification_score_identique(self):
         """Si plusieurs joueurs ont le même nombre de points, ils vont être séléctionné de manière aléatoire."""
@@ -46,33 +85,15 @@ class Controller:
         if score_present:
             self.melanger_joueurs()
 
-    def generation_des_paires(self):
-        """Generation de paire pour un tour."""
-        self.tournoi.liste_de_joueur.sort(key=lambda joueur: joueur.score, reverse=True)
-
-        matchs = []
-        self.verification_score_identique()
-
-        for i in range(0, len(self.tournoi.liste_de_joueur), 2):
-            joueur1 = self.tournoi.liste_de_joueur[i]
-            joueur2 = self.tournoi.liste_de_joueur[i + 1]
-
-            while (joueur1, joueur2) in matchs or (joueur2, joueur1) in matchs:
-                joueur1 = self.tournoi.liste_de_joueur[i]
-                joueur2 = self.tournoi.liste_de_joueur[i + 1]
-
-            match = Match(([joueur1, joueur1.score], [joueur2, joueur2.score]))
-            matchs.append(match)
-
-        tour = Tour(matchs, f"Round ${self.tournoi.tour_actuel}", datetime.now().date())
-
-        self.tournoi.liste_de_tour.append(tour)
-
     def distribution_points(self):
         """Distribut les points en fonction des resultats"""
         for match in self.tournoi.liste_de_tour[self.tournoi.tour_actuel - 1]:
             resultat = self.view.prompt_resultat()
             if resultat == "J1":
+                """joueur1 = match[0][0]
+                score joueur1 = match[0][1]
+                joueur2 = match[1][0]
+                score joueur2 = match[1][1]"""
                 match.joueur[0].score += 1
                 match.joueur[1].score -= 1
             elif resultat == "J2":
@@ -84,8 +105,11 @@ class Controller:
 
     def execution(self):
         """Execute le script principal du tournoi"""
+
+        self.menu_selection()
         self.demarrer_tournoi()
         self.ajouter_joueur()
+        self.melanger_joueurs()
         for i in range(0, self.tournoi.nombre_de_tours):
             self.tournoi.tour_actuel += 1
             self.generation_des_paires()
@@ -94,3 +118,5 @@ class Controller:
                 self.tournoi.tour_actuel - 1
             ].date_de_fin = datetime.now().date()
         self.tournoi.date_de_fin = datetime.now().date()
+
+

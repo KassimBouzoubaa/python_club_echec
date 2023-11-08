@@ -6,12 +6,10 @@ from models import Tournoi
 
 
 def main():
-    view = View()
-    tournoi = Tournoi()
-
-    game = Controller(view, tournoi)
-    game.execution()
-
+    controller = Controller(
+        view=View(),
+    )
+    controller.menu_selection()
 
 if __name__ == "__main__":
     main()
