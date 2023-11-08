@@ -1,6 +1,8 @@
 from datetime import date
 from typing import List, Dict, Any
 
+from models import Tournoi
+
 
 class View:
     """Implémentation de la view."""
@@ -25,23 +27,42 @@ class View:
 
     def get_user_input(self, champs: List[str]) -> Dict[str, str]:
         """Prompt pour ajouter des joueurs"""
-        print("Creation de joueur")
+        print("Création de joueur")
         input_joueurs = {}
         for champ in champs:
-            input_joueurs[champ] = input(f"Entrez {champ} : ")
+            while True:
+                valeur = input(f"Entrez {champ} : ")
+                if valeur.strip():  # Vérifie que la valeur n'est pas vide ou composée uniquement d'espaces
+                    input_joueurs[champ] = valeur
+                    break
+                else:
+                    print(f"Le champ {champ} ne peut pas être vide.")
         return input_joueurs
 
-    def prompt_pour_tournoi(self, champs: List[str]) -> Dict[str, str]:
-        """Prompt pour démarer le tournoi"""
+    def prompt_pour_creation_tournoi(self, champs: List[str]) -> Dict[str, str]:
+        """Prompt pour créer le tournoi"""
         print("Creation du tournoi")
         input_tournoi = {}
         for champ in champs:
             input_tournoi[champ] = input(f"Entrez {champ} : ")
         return input_tournoi
 
-    # nom = input("Entrez le nom du tournoi")
-    # lieu = input("Entrez le nom du lieu")
-    # description = input("Entrez les remarques générales du tournoi")
+    def prompt_pour_selectionner_tournoi(self, choices: List[Tournoi]) -> int:
+        print("Selectionnez le tournoi")
+        for index, choice in enumerate(choices):
+            print(f"{index}. {choice.nom}")
+        while True:
+            try:
+                choice = int(input("Sélectionnez une option : "))
+                if 0 <= choice <= len(choices):
+                    return choice
+                else:
+                    print(
+                        "Choix invalide. Veuillez entrez un nombre entre 0 et ",
+                        len(choices),
+                    )
+            except ValueError:
+                print("Saisie invalide. Veuillez entrer un nombre.")
 
     def prompt_resultat(self):
         """Prompt pour déterminer les resultats"""

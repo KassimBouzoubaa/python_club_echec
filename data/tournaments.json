@@ -1,0 +1,92 @@
+{
+    "liste_de_joueurs": [
+        {
+            "nom": "Dupont",
+            "prenom": "Jean",
+            "date_de_naissance": "1985-05-12",
+            "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
+        },
+        {
+            "nom": "Martin",
+            "prenom": "Sophie",
+            "date_de_naissance": "1990-09-28",
+            "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
+        },
+        {
+            "nom": "Lefebvre",
+            "prenom": "Marie",
+            "date_de_naissance": "1988-03-15",
+            "id": "e9a0876d-01ae-4960-aa4b-919005179969"
+        },
+        {
+            "nom": "Dubois",
+            "prenom": "Pierre",
+            "date_de_naissance": "1995-11-02",
+            "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
+        },
+        {
+            "nom": "Beauchamp",
+            "prenom": "Isabelle",
+            "date_de_naissance": "1982-07-20",
+            "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
+        },
+        {
+            "nom": "Gagnon",
+            "prenom": "Luc",
+            "date_de_naissance": "1993-04-04",
+            "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
+        },
+        {
+            "nom": "Roy",
+            "prenom": "Melissa",
+            "date_de_naissance": "1987-06-30",
+            "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
+        },
+        {
+            "nom": "Tremblay",
+            "prenom": "Eric",
+            "date_de_naissance": "1991-02-18",
+            "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
+        },
+        {
+            "nom": "Sinya",
+            "prenom": "Meha",
+            "date_de_naissance": "ok",
+            "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
+        },
+        {
+            "nom": "Yass",
+            "prenom": "Mou",
+            "date_de_naissance": "23/10/2020",
+            "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
+        }
+    ],
+    "liste_de_tournoi": [
+        {
+            "nom": "Premier",
+            "lieu": "Paris",
+            "date_de_debut": "2023-11-08",
+            "description": "FR",
+            "nombre_de_tours": 4,
+            "tour_actuel": 0,
+            "score_par_joueur": {},
+            "liste_de_tour": [],
+            "liste_de_joueur": [],
+            "date_de_fin": null,
+            "id": "2f3276b4-c990-4eec-9d04-753b5a2386c2"
+        },
+        {
+            "nom": "Second",
+            "lieu": "Lille",
+            "date_de_debut": "2023-11-08",
+            "description": "Super",
+            "nombre_de_tours": 4,
+            "tour_actuel": 0,
+            "score_par_joueur": {},
+            "liste_de_tour": [],
+            "liste_de_joueur": [],
+            "date_de_fin": null,
+            "id": "19333b6f-3f90-45c8-926a-9c5358d1f142"
+        }
+    ]
+}
