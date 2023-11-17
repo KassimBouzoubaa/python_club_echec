@@ -73,31 +73,3 @@ class Tournoi:
             "date_de_fin": self.date_de_fin,
             "id": self.id
         }
-    def init_tournoi(self):
-        self.score_par_joueur = {joueur.id: 0 for joueur in self.liste_de_joueur}
-        """ def generation_des_paires(self):
-
-        joueurs = []
-        if self.tour_actuel == 1:
-            joueurs = sorted(self.liste_de_joueur, key=lambda k: random.random() )
-        else:
-            joueurs = self.liste_de_joueur.sort(key=lambda joueur: self.score_par_joueur[joueur.id], reverse=True) #
-
-
-        matchs = []
-        self.verification_score_identique()
-
-        for i in range(0, len(self.liste_de_joueur), 2):
-            joueur1 = self.liste_de_joueur[i]
-            joueur2 = self.liste_de_joueur[i + 1]
-
-            while (joueur1, joueur2) in matchs or (joueur2, joueur1) in matchs:
-                joueur1 = self.liste_de_joueur[i]
-                joueur2 = self.liste_de_joueur[i + 1]
-
-            match = Match(([joueur1, joueur1.score], [joueur2, joueur2.score]))  # A vérifier
-            matchs.append(match)
-
-        tour = Tour(matchs, f"Round ${self.tour_actuel}", datetime.now().date())
-
-        self.liste_de_tour.append(tour)"""

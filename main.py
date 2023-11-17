@@ -8,7 +8,7 @@ def main():
     controller = Controller(
         view=View(),
     )
-    controller.menu_selection()
+    controller.menu_principal()
 
 if __name__ == "__main__":
     main()
