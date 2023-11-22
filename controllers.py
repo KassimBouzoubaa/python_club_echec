@@ -5,10 +5,7 @@ import json
 
 from models import Joueur, Tournoi
 from views import View
-from datetime import datetime
-
-with open("data/tournaments.json", "r") as f:
-    donnees = json.load(f)
+from datetime import datetime, date
 
 main_menu_choices = [
     "Tournois en cours",
@@ -21,9 +18,31 @@ main_menu_choices = [
 
 @dataclass
 class ControllerState:
-    joueurs: List[Joueur] = field(default_factory=lambda: donnees["liste_de_joueurs"])
-    tournois: List[Tournoi] = field(default_factory=lambda: donnees["liste_de_tournoi"])
+    joueurs: List[Joueur] = field(default_factory=lambda: [])
+    tournois: List[Tournoi] = field(default_factory=lambda: [])
     tournoi_en_cours: Optional[Tournoi] = None
+
+    @classmethod
+    def from_json(cls):
+        with open("data/tournaments.json", "r") as f:
+            donnees = json.load(f)
+
+        joueurs = [Joueur.from_dict(joueur) for joueur in donnees["liste_de_joueurs"]]
+        tournois = [
+            Tournoi.from_dict(tournoi) for tournoi in donnees["liste_de_tournoi"]
+        ]
+        return ControllerState(joueurs=joueurs, tournois=tournois)
+
+    def to_json(self):
+        joueurs_dict = [joueur.to_dict() for joueur in self.joueurs]
+        tournois_dict = [tournoi.to_dict() for tournoi in self.tournois]
+
+        donnees = {"liste_de_joueurs": joueurs_dict, "liste_de_tournoi": tournois_dict}
+        try:
+            with open("data/tournaments.json", "w") as f:
+                json.dump(donnees, f, indent=4)
+        except Exception as e:
+            print("Une erreur s'est produite lors de la sauvegarde des données :", e)
 
 
 class Controller:
@@ -32,7 +51,7 @@ class Controller:
     def __init__(self, view: View):
         """Contient un tournoi et une view"""
         self.view = view
-        self.state = ControllerState()
+        self.state = ControllerState.from_json()
 
     # ----------------------------
     # Menu functions
@@ -41,7 +60,7 @@ class Controller:
     def menu_principal(self):
         """Menu principal"""
 
-        choice = self.view.display_menu(main_menu_choices)
+        choice = self.view.display_menu(main_menu_choices, "Menu principal")
         if choice == 1:
             self.menu_tournoi_en_cours()
         elif choice == 2:
@@ -51,7 +70,9 @@ class Controller:
         elif choice == 4:
             self.menu_rapports()
         elif choice == 5:
-            self.exit()  # Implémenter
+            self.exit()
+
+        self.state.to_json()
 
     def menu_tournoi_en_cours(self):
         """Menu du tournoi en cour"""
@@ -60,16 +81,16 @@ class Controller:
             self.choisir_tournoi_en_cours()
             self.menu_tournoi_en_cours()
         else:
-            # est-ce que mon tournoi est démarré?
             if self.state.tournoi_en_cours.tour_actuel == 0:
                 choice = self.view.display_menu(
-                    ["Démarrer le tournoi", "Ajouter des joueurs", "Retour"]
+                    ["Démarrer le tournoi", "Ajouter des joueurs", "Retour"],
+                    "Menu du tournoi en cour",
                 )
                 if choice == 1:
                     self.demarrer_tournoi_en_cours()
                     self.menu_tournoi_en_cours()
                 elif choice == 2:
-                    self.ajouter_joueur()
+                    self.ajouter_joueur_tournoi()
                     self.menu_tournoi_en_cours()
                 else:
                     self.menu_principal()
@@ -102,7 +123,8 @@ class Controller:
                 "Modifier un tournoi",
                 "Lister les tournois",
                 "Retour",
-            ]
+            ],
+            "Menu liste des tournois",
         )
         if choice == 1:
             self.creation_tournoi()
@@ -125,7 +147,8 @@ class Controller:
                 "Modifier des joueurs",
                 "Lister les joueurs",
                 "Retour",
-            ]
+            ],
+            "Menu liste des joueurs",
         )
         if choice == 1:
             self.ajouter_joueur()
@@ -142,7 +165,34 @@ class Controller:
     def menu_rapports(self):
         """Menu rapport"""
 
-        pass
+        choice = self.view.display_menu(
+            [
+                "Liste des joueurs par ordre alphabétique",
+                "Liste de tout les tournois",
+                "Nom et date d'un tournoi donné",
+                "Liste des joueurs d'un tournoi par ordre alphabétique",
+                "Liste de tous les tours du tournoi et de tous les matchs du tour",
+                "Retour",
+            ],
+            "Menu rapport",
+        )
+        if choice == 1:
+            self.liste_joueurs_trier()
+            self.menu_rapports()
+        elif choice == 2:
+            self.liste_tournoi()
+            self.menu_rapports()
+        elif choice == 3:
+            self.get_tournoi()
+            self.menu_rapports()
+        elif choice == 4:
+            self.get_joueurs_par_tournoi()
+            self.menu_rapports()
+        elif choice == 5:
+            self.get_tours_matchs_par_tournoi()
+            self.menu_rapports()
+        elif choice == 6:
+            self.menu_principal()
 
     # ----------------------------
     # Tournoi functions
@@ -157,8 +207,9 @@ class Controller:
         tournoi = None
         while tournoi is None:
             id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id = id_tournoi["Id du tournoi"]
             tournois_par_id = {tournoi.id: tournoi for tournoi in self.state.tournois}
-            tournoi = tournois_par_id.get(id_tournoi)  # A comprendre
+            tournoi = tournois_par_id.get(id)  # A comprendre
 
         self.state.tournoi_en_cours = tournoi
 
@@ -175,7 +226,6 @@ class Controller:
         """Terminer le tournoi en cours"""
 
         self.state.tournoi_en_cours.date_de_fin = datetime.now().date()
-        donnees["liste_de_tournoi"].append(self.state.tournoi_en_cours.to_dict())
 
     def creation_tournoi(self):
         """Création d'un tournoi"""
@@ -187,19 +237,107 @@ class Controller:
             input_tournoi["nom"],
             input_tournoi["lieu"],
             datetime.now().date(),
-            description=input_tournoi["description"]
+            description=input_tournoi["description"],
         )
-        self.state.tournois.append(tournoi.to_dict())
+        self.state.tournois.append(tournoi)
 
     def modifier_tournoi(self):
-        pass
+        """Modifie un tournoi"""
+        message = "Sélectionnez l'id du tournoi :\n" + "\n".join(
+            [f"{tournoi.nom} (id: {tournoi.id})" for tournoi in self.state.tournois]
+        )
+
+        id_tournoi = None
+        while id_tournoi is None:
+            id_input = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_tournoi = id_input["Id du tournoi"]
+            if id_tournoi not in [tournoi.id for tournoi in self.state.tournois]:
+                print("L'id du tournoi n'existe pas, veuillez ressayer.")
+                return
+
+        champs = ["nom, lieu ou description"]
+
+        valeur_champ = self.view.get_user_input(champs, "Que souhaitez-vous modifier ?")
+        champ = valeur_champ["nom, lieu ou description"]
+        if champ not in ["nom", "lieu", "description"]:
+            print("Erreur de format. Assurez-vous d'entrer la valeur correctement.")
+            return
+
+        valeur = self.view.get_user_input(
+            [champ], f"Entrez la nouvelle valeur pour {champ.capitalize()}"
+        )
+
+        for tournoi in self.state.tournois:
+            if tournoi.id == id_tournoi:
+                if champ == "nom":
+                    tournoi.nom = valeur[champ]
+                elif champ == "lieu":
+                    tournoi.lieu = valeur[champ]
+                elif champ == "description":
+                    tournoi.description = valeur[champ]
 
     def liste_tournoi(self):
         """Liste des tournois"""
 
         print("Liste des tournois : ")
         for tournoi in self.state.tournois:
-            print(tournoi)
+            print(tournoi.to_dict())
+
+    def get_tournoi(self):
+        """Récupère le nom et la date d'un tournoi donné"""
+
+        message = "Selectionnez l'id du tournoi:\n" + "\n".join(
+            [f"{tournoi.nom} (id: {tournoi.id})" for tournoi in self.state.tournois]
+        )
+        tournoi = None
+        while tournoi is None:
+            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id = id_tournoi["Id du tournoi"]
+            tournois_par_id = {tournoi.id: tournoi for tournoi in self.state.tournois}
+            tournoi = tournois_par_id.get(id)  # A comprendre
+
+        print(
+            f"nom: {tournoi.nom}\ndate de debut: {tournoi.date_de_debut}\ndate de fin: {tournoi.date_de_fin}"
+        )
+
+    def get_joueurs_par_tournoi(self):
+        """Récupère la liste des joueurs d'un tournoi par ordre alphabétique"""
+
+        message = "Selectionnez l'id du tournoi:\n" + "\n".join(
+            [f"{tournoi.nom} (id: {tournoi.id})" for tournoi in self.state.tournois]
+        )
+        tournoi = None
+        while tournoi is None:
+            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id = id_tournoi["Id du tournoi"]
+            tournois_par_id = {tournoi.id: tournoi for tournoi in self.state.tournois}
+            tournoi = tournois_par_id.get(id)  # A comprendre
+
+        joueurs_tries = sorted(tournoi.liste_de_joueur, key=lambda joueur: joueur.nom)
+        print("Liste des joueurs : ")
+        for joueur in joueurs_tries:
+            print(joueur.to_dict())
+
+    def get_tours_matchs_par_tournoi(self):
+        """Récupère les tours et les matchs d'un tournoi"""
+
+        message = "Selectionnez l'id du tournoi:\n" + "\n".join(
+            [f"{tournoi.nom} (id: {tournoi.id})" for tournoi in self.state.tournois]
+        )
+        tournoi = None
+        while tournoi is None:
+            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id = id_tournoi["Id du tournoi"]
+            tournois_par_id = {tournoi.id: tournoi for tournoi in self.state.tournois}
+            tournoi = tournois_par_id.get(id)  # A comprendre
+
+        print("Liste des tours : ")
+        for tour in tournoi.liste_de_tour:
+            print(tour.name)
+            print(tour)
+            print("Liste des matchs")
+            for match in tour.tour:
+                print(match)
 
     # ----------------------------
     # Joueurs functions
@@ -209,38 +347,81 @@ class Controller:
         """Ajouter des joueurs"""
 
         message = "Ajout d'un joueur"
-        champs_joueur = ["nom", "prenom", "date de naissance"]
+        champs_joueur = ["nom", "prenom", "date de naissance (YYYY-MM-DD)"]
 
         valeurs_joueur = self.view.get_user_input(champs_joueur, message)
-        joueur = Joueur(valeurs_joueur["nom"], valeurs_joueur["prenom"],  valeurs_joueur["date de naissance"])
+        try:
+            date_de_naissance = date.fromisoformat(
+                valeurs_joueur["date de naissance (YYYY-MM-DD)"]
+            )
+            joueur = Joueur(
+                valeurs_joueur["nom"], valeurs_joueur["prenom"], date_de_naissance
+            )
 
-        self.state.joueurs.append(joueur.to_dict())
+            self.state.joueurs.append(joueur)
+        except ValueError:
+            print("Erreur de format. Assurez-vous d'entrer la valeur correctement.")
+            self.ajouter_joueur()
+
+    def ajouter_joueur_tournoi(self):
+        "Ajouter des joueurs au tournoi en cours"
+
+        message = "Selectionnez l'id du joueur:\n" + "\n".join(
+            [f"{joueur.nom} (id: {joueur.id})" for joueur in self.state.joueurs]
+        )
+        id = None
+        while id is None:
+            id_joueur = self.view.get_user_input(["Id du joueur"], message=message)
+            id = id_joueur["Id du joueur"]
+
+            for joueur in self.state.joueurs:
+                if joueur.id == id:
+                    self.state.tournoi_en_cours.liste_de_joueur.append(joueur)
+
+        print(f"Le joueur à bien été ajouté au tournoi en cour.")
 
     def modifier_joueur(self):
-        pass
+        """Modifie un joueur"""
+        message = "Sélectionnez l'id du joueur :\n" + "\n".join(
+            [f"{joueur.nom} (id: {joueur.id})" for joueur in self.state.joueurs]
+        )
+
+        id_joueur = None
+        while id_joueur is None:
+            id_input = self.view.get_user_input(["Id du joueur"], message=message)
+            id_joueur = id_input["Id du joueur"]
+
+        champs = ["nom, prenom ou date de naissance"]
+        valeur_champ = self.view.get_user_input(champs, "Que souhaitez-vous modifier ?")
+        champ = valeur_champ["nom, prenom ou date de naissance"]
+        valeur = self.view.get_user_input(
+            [champ], f"Entrez la nouvelle valeur pour {champ.capitalize()}"
+        )
+
+        for joueur in self.state.joueurs:
+            if joueur.id == id_joueur:
+                if champ == "nom":
+                    joueur.nom = valeur[champ]
+                elif champ == "prenom":
+                    joueur.prenom = valeur[champ]
+                elif champ == "date de naissance":
+                    joueur.date_de_naissance = valeur[champ]
 
     def lister_les_joueurs(self):
-        pass
+        """Liste tout les joueurs"""
+
+        print("Liste des joueurs")
+
+        for joueur in self.state.joueurs:
+            print(joueur.to_dict())
 
     def liste_joueurs_trier(self):
         """Récupère tout les joueurs et les tri par ordre alphabétique"""
 
-        joueurs_tries = sorted(self.state.joueurs, key=lambda joueur: joueur["nom"])
+        joueurs_tries = sorted(self.state.joueurs, key=lambda joueur: joueur.nom)
         print("Liste des joueurs : ")
         for joueur in joueurs_tries:
-            print(joueur)
-
-    # ----------------------------
-    # Donnees functions
-    # ----------------------------
-    def sauvegarder_donnees(self):
-        """Sauvegarde les données dans le dossier data"""
-
-        try:
-            with open("data/tournaments.json", "w") as f:
-                json.dump(donnees, f, indent=4)
-        except Exception as e:
-            print("Une erreur s'est produite lors de la sauvegarde des données :", e)
+            print(joueur.to_dict())
 
     # ----------------------------
     # Others functions

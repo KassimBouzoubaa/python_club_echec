@@ -7,9 +7,9 @@ from models import Tournoi
 class View:
     """Implémentation de la view."""
 
-    def display_menu(self, choices: List[str]) -> int:
+    def display_menu(self, choices: List[str], message: str) -> int:
         """Prompt du menu principal"""
-        print("Menu principal:")
+        print(message)
         for index, choice in enumerate(choices):
             print(f"{index +1}. {choice}")
         while True:
