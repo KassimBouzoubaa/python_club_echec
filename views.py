@@ -38,3 +38,6 @@ class View:
                 else:
                     print(f"Le champ {champ} ne peut pas être vide.")
         return inputs
+
+    def simple_log(self, message: any):
+        print(message)
