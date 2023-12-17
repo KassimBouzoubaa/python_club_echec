@@ -25,6 +25,10 @@ class ControllerState:
 
     @classmethod
     def from_json(cls, filepath: str):
+        """Sérialise les information de mon state (joueurs, tournois, tournoi_en_cours
+                 pour les récupérer du JSON sous la forme d'un dictionnaire avec les ids
+                 en clé et les objets en valeur.
+             """
         with open(filepath, "r") as f:
             donnees = json.load(f)
 
@@ -46,20 +50,19 @@ class ControllerState:
         )
 
     def to_json(self, filepath: str):
+        """Sérialise les information de mon state (joueurs, tournois)
+            pour les enregistrer dans le JSON en tant que liste de dictionnaire.
+        """
         joueurs_serialized = [
-            joueur.to_dict() for joueur in self.state.joueurs.values()
+            joueur.to_dict() for joueur in self.joueurs.values()
         ]
         tournois_serialized = [
-            tournoi.to_dict() for tournoi in self.state.tournois.values()
+            tournoi.to_dict() for tournoi in self.tournois.values()
         ]
-        id_tournoi_en_cours = (
-            self.tournoi_en_cours.id if self.tournoi_en_cours is not None else None
-        )
 
         donnees = {
             "liste_de_joueurs": joueurs_serialized,
             "liste_de_tournoi": tournois_serialized,
-            "tournoi_en_cours": id_tournoi_en_cours,
         }
         try:
             with open(filepath, "w") as f:
