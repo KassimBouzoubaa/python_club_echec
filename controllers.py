@@ -28,52 +28,37 @@ class ControllerState:
         with open(filepath, "r") as f:
             donnees = json.load(f)
 
-        joueurs = [Joueur.from_dict(joueur) for joueur in donnees["liste_de_joueurs"]]
-        # Transforme une liste de dictionnaire en liste de classe Joueur
-        context = {"joueurs_par_id": {joueur.id: joueur for joueur in joueurs}}
-        # Crée un dictionnaire "context" qui contient la clé 'joueurs_par_id', qui contient
-        # un dictionnaire avec les ids en clé et l'instance Joueur en valeur
+        joueurs = [Joueur.from_dict(data) for data in donnees["liste_de_joueurs"]]
+        joueurs_dict = {joueur.id: joueur for joueur in joueurs}
+
         tournois = [
-            Tournoi.from_dict(tournoi, context)
-            for tournoi in donnees["liste_de_tournoi"]
+            Tournoi.from_dict(data, context={"joueurs": joueurs_dict})
+            for data in donnees["liste_de_tournois"]
         ]
-        tournois_par_id = {tournoi.id: tournoi for tournoi in tournois}
-        # Transforme une liste de dictionnaire en liste de classe Tournoi
-        id_tournoi_en_cours: Optional[str] = donnees["tournoi_en_cours"]
+        tournois_dict = {tournoi.id: tournoi for tournoi in tournois}
 
-        tournoi_en_cours: Optional[Tournoi] = (
-            next(
-                (tournoi for tournoi in tournois if tournoi.id == id_tournoi_en_cours),
-                None,
-            )
-            if id_tournoi_en_cours is not None
-            else None
-        )
-
-        # Vérifie si il y a un tournoi en cours, si c'est le cas, récupère le tournoi dans le
-        # JSON grâce à son id
+        tournoi_en_cours = tournois_dict.get(donnees["tournoi_en_cours"])
 
         return ControllerState(
-            joueurs=context["joueurs_par_id"],
-            tournois=tournois_par_id,
+            joueurs=joueurs_dict,
+            tournois=tournois_dict,
             tournoi_en_cours=tournoi_en_cours,
         )
 
     def to_json(self, filepath: str):
-        joueurs_dict = {
-            joueur_id: joueur.to_dict() for joueur_id, joueur in self.joueurs.items()
-        }
-        tournois_dict = {
-            tournoi_id: tournoi.to_dict()
-            for tournoi_id, tournoi in self.tournois.items()
-        }
+        joueurs_serialized = [
+            joueur.to_dict() for joueur in self.state.joueurs.values()
+        ]
+        tournois_serialized = [
+            tournoi.to_dict() for tournoi in self.state.tournois.values()
+        ]
         id_tournoi_en_cours = (
             self.tournoi_en_cours.id if self.tournoi_en_cours is not None else None
         )
 
         donnees = {
-            "liste_de_joueurs": joueurs_dict,
-            "liste_de_tournoi": tournois_dict,
+            "liste_de_joueurs": joueurs_serialized,
+            "liste_de_tournoi": tournois_serialized,
             "tournoi_en_cours": id_tournoi_en_cours,
         }
         try:
@@ -252,7 +237,7 @@ class Controller:
             id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
             id = id_tournoi["Id du tournoi"]
 
-            tournoi =self.state.tournois.get(id)
+            tournoi = self.state.tournois.get(id)
 
         self.state.tournoi_en_cours = tournoi
 
