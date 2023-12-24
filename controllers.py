@@ -26,9 +26,9 @@ class ControllerState:
     @classmethod
     def from_json(cls, filepath: str):
         """Sérialise les information de mon state (joueurs, tournois, tournoi_en_cours
-                 pour les récupérer du JSON sous la forme d'un dictionnaire avec les ids
-                 en clé et les objets en valeur.
-             """
+        pour les récupérer du JSON sous la forme d'un dictionnaire avec les ids
+        en clé et les objets en valeur.
+        """
         with open(filepath, "r") as f:
             donnees = json.load(f)
 
@@ -36,12 +36,14 @@ class ControllerState:
         joueurs_dict = {joueur.id: joueur for joueur in joueurs}
 
         tournois = [
-            Tournoi.from_dict(data, context={"joueurs": joueurs_dict})
-            for data in donnees["liste_de_tournois"]
+            Tournoi.from_dict(data,joueurs)
+            for data in donnees["liste_de_tournoi"]
         ]
         tournois_dict = {tournoi.id: tournoi for tournoi in tournois}
 
-        tournoi_en_cours = tournois_dict.get(donnees["tournoi_en_cours"])
+        tournoi_en_cours = tournois_dict.get(
+            donnees["tournoi_en_cours"]
+        ) if donnees and donnees["tournoi_en_cours"] is not None else None
 
         return ControllerState(
             joueurs=joueurs_dict,
@@ -51,18 +53,20 @@ class ControllerState:
 
     def to_json(self, filepath: str):
         """Sérialise les information de mon state (joueurs, tournois)
-            pour les enregistrer dans le JSON en tant que liste de dictionnaire.
+        pour les enregistrer dans le JSON en tant que liste de dictionnaire.
         """
-        joueurs_serialized = [
-            joueur.to_dict() for joueur in self.joueurs.values()
-        ]
-        tournois_serialized = [
-            tournoi.to_dict() for tournoi in self.tournois.values()
-        ]
+        joueurs_serialized = [joueur.to_dict() for joueur in self.joueurs.values()]
+        tournois_serialized = [tournoi.to_dict() for tournoi in self.tournois.values()]
+        tournoi_en_cours = (
+            self.tournoi_en_cours.to_dict()
+            if self.tournoi_en_cours is not None
+            else None
+        )
 
         donnees = {
             "liste_de_joueurs": joueurs_serialized,
             "liste_de_tournoi": tournois_serialized,
+            "tournoi_en_cours": tournoi_en_cours,
         }
         try:
             with open(filepath, "w") as f:
@@ -100,7 +104,7 @@ class Controller:
         elif choice == 5:
             self.exit()
 
-        self.state.to_json()
+        self.save()
 
     def menu_tournoi_en_cours(self):
         """Menu du tournoi en cour"""
@@ -115,7 +119,7 @@ class Controller:
                     "Menu du tournoi en cour",
                 )
                 if choice == 1:
-                    self.demarrer_tournoi_en_cours()
+                    self.state.tournoi_en_cours.demarrer()
                     self.menu_tournoi_en_cours()
                 elif choice == 2:
                     self.ajouter_joueur_tournoi()
@@ -127,14 +131,16 @@ class Controller:
                     [
                         "Entrer les résultats du tour",
                         "Passer au tour suivant",
-                        "Finir le tournoi" "Retour",
-                    ]
+                        "Finir le tournoi",
+                        "Retour",
+                    ],
+                    "Tournoi en cour",
                 )
                 if choice == 1:
                     self.entrer_resultats_du_tour()
                     self.menu_tournoi_en_cours()
                 elif choice == 2:
-                    self.passer_au_tour_suivant()
+                    self.state.tournoi_en_cours.passer_tour_suivant()
                     self.menu_tournoi_en_cours()
                 elif choice == 3:
                     self.terminer_tournoi()
@@ -243,20 +249,37 @@ class Controller:
             tournoi = self.state.tournois.get(id)
 
         self.state.tournoi_en_cours = tournoi
-
-    def demarrer_tournoi_en_cours(self):
-        pass
+        self.save()
 
     def entrer_resultats_du_tour(self):
-        pass
+        """Récupération des résultats"""
+        for match in self.state.tournoi_en_cours.liste_de_tour[
+            self.state.tournoi_en_cours.tour_actuel
+        ].tour:
+            message = "Quel est le resultat du match"
+            champ_resultat = ["joueur1, joueur2, nul"]
+            input_resultat = self.view.display_menu(champ_resultat, message)
+            if input_resultat == 1:
+                self.state.tournoi_en_cours.score_par_joueur[match[0][0].id] += 1
+            elif input_resultat == 2:
+                self.state.tournoi_en_cours.score_par_joueur[match[1][0].id] += 1
+            elif input_resultat == 3:
+                self.state.tournoi_en_cours.score_par_joueur[match[0][0].id] += 0.5
+                self.state.tournoi_en_cours.score_par_joueur[match[1][0].id] += 0.5
 
-    def passer_au_tour_suivant(self):
-        pass
+        self.save()
 
     def terminer_tournoi(self):
         """Terminer le tournoi en cours"""
 
-        self.state.tournoi_en_cours.date_de_fin = datetime.now().date()
+        self.state.tournoi_en_cours.terminer()
+        for joueur in self.state.tournoi_en_cours.liste_de_joueur:
+            joueur.score += self.state.tournoi_en_cours.score_par_joueur[joueur.id]
+        self.state.tournois[
+            self.state.tournoi_en_cours.id
+        ] = self.state.tournoi_en_cours
+        self.state.tournoi_en_cours = None
+        self.save()
 
     def creation_tournoi(self):
         """Création d'un tournoi"""
@@ -267,10 +290,10 @@ class Controller:
         tournoi = Tournoi(
             input_tournoi["nom"],
             input_tournoi["lieu"],
-            datetime.now().date(),
             description=input_tournoi["description"],
         )
         self.state.tournois[tournoi.id] = tournoi
+        self.save()
 
     def modifier_tournoi(self):
         """Modifie un tournoi"""
@@ -314,12 +337,14 @@ class Controller:
                 elif champ == "description":
                     tournoi.description = valeur[champ]
 
+        self.save()
+
     def liste_tournoi(self):
         """Liste des tournois"""
 
         self.view.simple_log("Liste des tournois : ")
         for tournoi in self.state.tournois.values():
-            self.view.simple_log(tournoi.to_dict())
+            self.view.simple_log(tournoi.nom)
 
     def get_tournoi(self):
         """Récupère le nom et la date d'un tournoi donné"""
@@ -413,6 +438,7 @@ class Controller:
             )
 
             self.ajouter_joueur()
+            self.save()
 
     def ajouter_joueur_tournoi(self):
         "Ajouter des joueurs au tournoi en cours"
@@ -433,6 +459,7 @@ class Controller:
                     self.state.tournoi_en_cours.liste_de_joueur.append(joueur)
 
         self.view.simple_log("Le joueur à bien été ajouté au tournoi en cour.")
+        self.save()
 
     def modifier_joueur(self):
         """Modifie un joueur"""
@@ -463,6 +490,8 @@ class Controller:
                     joueur.prenom = valeur[champ]
                 elif champ == "date de naissance":
                     joueur.date_de_naissance = valeur[champ]
+
+        self.save()
 
     def lister_les_joueurs(self):
         """Liste tout les joueurs"""

@@ -3,72 +3,84 @@
         {
             "nom": "Dupont",
             "prenom": "Jean",
+            "score": 0,
             "date_de_naissance": "1985-05-12",
             "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
         },
         {
             "nom": "Martin",
             "prenom": "Sophie",
+            "score": 0,
             "date_de_naissance": "1990-09-28",
             "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
         },
         {
             "nom": "Lefebvre",
             "prenom": "Marie",
+            "score": 0,
             "date_de_naissance": "1988-03-15",
             "id": "e9a0876d-01ae-4960-aa4b-919005179969"
         },
         {
             "nom": "Dubois",
             "prenom": "Pierre",
+            "score": 0,
             "date_de_naissance": "1995-11-02",
             "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
         },
         {
             "nom": "Beauchamp",
             "prenom": "Isabelle",
+            "score": 0,
             "date_de_naissance": "1982-07-20",
             "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
         },
         {
             "nom": "Gagnon",
             "prenom": "Luc",
+            "score": 0,
             "date_de_naissance": "1993-04-04",
             "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
         },
         {
             "nom": "Roy",
             "prenom": "Melissa",
+            "score": 0,
             "date_de_naissance": "1987-06-30",
             "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
         },
         {
             "nom": "Tremblay",
             "prenom": "Eric",
+            "score": 0,
             "date_de_naissance": "1991-02-18",
             "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
         },
         {
             "nom": "Sinya",
             "prenom": "Meha",
+            "score": 0,
             "date_de_naissance": "1991-02-18",
             "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
         },
         {
             "nom": "Yassin",
             "prenom": "Mou",
+            "score": 0,
             "date_de_naissance": "1991-02-18",
             "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
         },
         {
             "nom": "Bouzoubaa",
             "prenom": "Kassim",
+            "score": 0,
             "date_de_naissance": "1998-02-25",
             "id": "50661466-7f90-4165-9e99-6d9d81391a74"
         },
         {
             "nom": "Jdaini",
             "prenom": "Sami",
+            "score": 0,
             "date_de_naissance": "2000-02-10",
             "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
         }
@@ -102,16 +114,45 @@
         },
         {
             "nom": "Troisieme tournoi",
-            "lieu": "Nice",
+            "lieu": "monaco",
             "date_de_debut": "2023-11-22",
             "description": "Troisieme tournoi",
             "nombre_de_tours": 4,
             "tour_actuel": 0,
             "score_par_joueur": {},
             "liste_de_tour": [],
-            "liste_de_joueur": [],
+            "liste_de_joueur": [
+                {
+                    "nom": "Jdaini",
+                    "prenom": "Sami",
+                    "score": 0,
+                    "date_de_naissance": "2000-02-10",
+                    "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
+                }
+            ],
             "date_de_fin": null,
             "id": "957a1cb7-3b3c-4bd5-b9e7-5eeb080201e9"
         }
-    ]
+    ],
+    "tournoi_en_cours": {
+        "nom": "Troisieme tournoi",
+        "lieu": "monaco",
+        "date_de_debut": "2023-11-22",
+        "description": "Troisieme tournoi",
+        "nombre_de_tours": 4,
+        "tour_actuel": 0,
+        "score_par_joueur": {},
+        "liste_de_tour": [],
+        "liste_de_joueur": [
+            {
+                "nom": "Jdaini",
+                "prenom": "Sami",
+                "score": 0,
+                "date_de_naissance": "2000-02-10",
+                "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
+            }
+        ],
+        "date_de_fin": null,
+        "id": "957a1cb7-3b3c-4bd5-b9e7-5eeb080201e9"
+    }
 }
