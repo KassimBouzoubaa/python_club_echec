@@ -47,7 +47,7 @@ class Tour:
 
     tour: List[Match]
     name: str
-    date_de_debut: date
+    date_de_debut: date =  datetime.now().date()
     date_de_fin: Optional[date] = None
 
     def to_dict(self):
@@ -100,7 +100,7 @@ class Tournoi:
     description: str
     nombre_de_tours: int = 4
     tour_actuel: int = 0
-    score_par_joueur: Dict[str, int] = field(default_factory=lambda: {})
+    score_par_joueur: Dict[str, float] = field(default_factory=lambda: {})
     liste_de_tour: List[Tour] = field(default_factory=lambda: [])
     liste_de_joueur: List[Joueur] = field(default_factory=lambda: [])
     date_de_debut: Optional[date] = None
@@ -127,7 +127,7 @@ class Tournoi:
         }
 
     @classmethod
-    def from_dict(cls, donnee, joueurs):
+    def from_dict(cls, donnee, joueurs, joueurs_dict):
 
         return Tournoi(
             nom=donnee["nom"],
@@ -137,7 +137,7 @@ class Tournoi:
             tour_actuel=donnee["tour_actuel"],
             score_par_joueur=donnee["score_par_joueur"],
             liste_de_tour=[
-                Tour.from_dict(tour, joueurs_par_id) for tour in donnee["liste_de_tour"]
+                Tour.from_dict(tour, joueurs_dict) for tour in donnee["liste_de_tour"]
             ],
             liste_de_joueur=joueurs,
             date_de_debut=date.fromisoformat(donnee["date_de_debut"])
@@ -150,14 +150,21 @@ class Tournoi:
         )
 
     def generation_de_paire(self) -> List[Match]:
-        """tour_actuel, joueurs: List[Joueur], tours, scores"""
+        """Génération de paires de match"""
 
         joueurs = self.melanger_joueurs()
+
+        if self.tour_actuel == 1:
+            for joueur in joueurs:
+                self.score_par_joueur[joueur.id] = 0
+
         matchs = []
 
         while len(joueurs) >= 2:  # Tant qu'il reste au moins deux joueurs
             joueur1 = joueurs.pop(0)  # Retire le premier joueur de la liste
             score_joueur1 = self.score_par_joueur[joueur1.id]
+
+            print(joueur1)
 
             index = 0
             joueur2_trouve = False
@@ -174,11 +181,8 @@ class Tournoi:
                     break
                 index += 1  # Passe au joueur suivant dans la liste
 
-                # Si joueur 2 trouvé, sortir de la boucle externe
-            if joueur2_trouve:
-                break
-
             # Création de la paire de joueurs avec leurs scores
+            print("joueur2")
             match = ([joueur1, score_joueur1], [joueur2, score_joueur2])
             matchs.append(match)
 
@@ -186,8 +190,9 @@ class Tournoi:
 
     def generer_tour(self):
         matchs = self.generation_de_paire()
-        tour = Tour(matchs, f"Round {self.tour_actuel}", datetime.now())
-        self.liste_de_tour[self.tour_actuel - 1] = tour
+        print('match', matchs)
+        tour = Tour(matchs, f"Round {self.tour_actuel}")
+        self.liste_de_tour.append(tour)
 
     def demarrer(self):
         if self.tour_actuel == 0:
@@ -222,7 +227,7 @@ class Tournoi:
         return joueurs_tries
 
     def passer_tour_suivant(self):
-        self.liste_de_tour[self.tour_actuel - 1].date_de_fin = datetime.now()
+        self.liste_de_tour[self.tour_actuel - 1].date_de_fin = datetime.now().date()
         self.tour_actuel += 1
         self.generer_tour()
 

@@ -36,13 +36,13 @@ class ControllerState:
         joueurs_dict = {joueur.id: joueur for joueur in joueurs}
 
         tournois = [
-            Tournoi.from_dict(data,joueurs)
+            Tournoi.from_dict(data,joueurs, joueurs_dict)
             for data in donnees["liste_de_tournoi"]
         ]
         tournois_dict = {tournoi.id: tournoi for tournoi in tournois}
 
         tournoi_en_cours = tournois_dict.get(
-            donnees["tournoi_en_cours"]
+            donnees["tournoi_en_cours"]["id"]
         ) if donnees and donnees["tournoi_en_cours"] is not None else None
 
         return ControllerState(
@@ -254,10 +254,10 @@ class Controller:
     def entrer_resultats_du_tour(self):
         """Récupération des résultats"""
         for match in self.state.tournoi_en_cours.liste_de_tour[
-            self.state.tournoi_en_cours.tour_actuel
+            self.state.tournoi_en_cours.tour_actuel - 1
         ].tour:
-            message = "Quel est le resultat du match"
-            champ_resultat = ["joueur1, joueur2, nul"]
+            message = f"Quel est le resultat du match : {match[0][0].prenom} contre {match[1][0].prenom}"
+            champ_resultat = [match[0][0].prenom, match[1][0].prenom, "Match nul"]
             input_resultat = self.view.display_menu(champ_resultat, message)
             if input_resultat == 1:
                 self.state.tournoi_en_cours.score_par_joueur[match[0][0].id] += 1
