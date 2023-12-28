@@ -3,84 +3,84 @@
         {
             "nom": "Dupont",
             "prenom": "Jean",
-            "score": 1,
+            "score": 7.0,
             "date_de_naissance": "1985-05-12",
             "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
         },
         {
             "nom": "Martin",
             "prenom": "Sophie",
-            "score": 1,
+            "score": 7.0,
             "date_de_naissance": "1990-09-28",
             "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
         },
         {
             "nom": "Lefebvre",
             "prenom": "Marie",
-            "score": 0,
+            "score": 1.5,
             "date_de_naissance": "1988-03-15",
             "id": "e9a0876d-01ae-4960-aa4b-919005179969"
         },
         {
             "nom": "Dubois",
             "prenom": "Pierre",
-            "score": 2,
+            "score": 12,
             "date_de_naissance": "1995-11-02",
             "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
         },
         {
             "nom": "Beauchamp",
             "prenom": "Isabelle",
-            "score": 2,
+            "score": 10,
             "date_de_naissance": "1982-07-20",
             "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
         },
         {
             "nom": "Gagnon",
             "prenom": "Luc",
-            "score": 0,
+            "score": 2,
             "date_de_naissance": "1993-04-04",
             "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
         },
         {
             "nom": "Roy",
             "prenom": "Melissa",
-            "score": 1,
+            "score": 5.5,
             "date_de_naissance": "1987-06-30",
             "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
         },
         {
             "nom": "Tremblay",
             "prenom": "Eric",
-            "score": 1,
+            "score": 4,
             "date_de_naissance": "1991-02-18",
             "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
         },
         {
             "nom": "Sinya",
             "prenom": "Meha",
-            "score": 1,
+            "score": 8.5,
             "date_de_naissance": "1991-02-18",
             "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
         },
         {
             "nom": "Yassin",
             "prenom": "Mou",
-            "score": 1,
+            "score": 7.0,
             "date_de_naissance": "1991-02-18",
             "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
         },
         {
             "nom": "Bouzoubaa",
             "prenom": "Kassim",
-            "score": 0,
+            "score": 3,
             "date_de_naissance": "1998-02-25",
             "id": "50661466-7f90-4165-9e99-6d9d81391a74"
         },
         {
             "nom": "Jdaini",
             "prenom": "Sami",
-            "score": 2,
+            "score": 10.5,
             "date_de_naissance": "2000-02-10",
             "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
         }
@@ -91,97 +91,245 @@
             "lieu": "Paris",
             "description": "FR",
             "nombre_de_tours": 4,
-            "tour_actuel": 0,
-            "score_par_joueur": {},
-            "liste_de_tour": [],
+            "tour_actuel": 2,
+            "score_par_joueur": {
+                "dba56e2b-3138-4a04-8c4c-ae51e003392a": 0.5,
+                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8": 1.0,
+                "e9a0876d-01ae-4960-aa4b-919005179969": 1.5,
+                "194e8b46-7201-4c7a-b0a8-887443c9f9ab": 1,
+                "f6b99f67-e0d9-4546-9e59-414c3fdd061e": 2,
+                "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e": 2,
+                "fde0e076-9018-4cd8-be05-431fe1bb4779": 0.5,
+                "e325a6f6-c722-4b85-b253-ab9ed3cc0649": 1,
+                "81172976-35c7-4b2f-aed4-cce3c51d03b1": 0.5,
+                "aefc943f-1f44-4431-9fac-3dc810d2dd14": 1.0,
+                "50661466-7f90-4165-9e99-6d9d81391a74": 0,
+                "5d0c1f34-2395-41ea-a610-753511709c0b": 1
+            },
+            "liste_de_tour": [
+                {
+                    "tour": [
+                        [
+                            [
+                                "5d0c1f34-2395-41ea-a610-753511709c0b",
+                                0
+                            ],
+                            [
+                                "194e8b46-7201-4c7a-b0a8-887443c9f9ab",
+                                1
+                            ]
+                        ],
+                        [
+                            [
+                                "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e",
+                                1
+                            ],
+                            [
+                                "50661466-7f90-4165-9e99-6d9d81391a74",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "fde0e076-9018-4cd8-be05-431fe1bb4779",
+                                0
+                            ],
+                            [
+                                "e325a6f6-c722-4b85-b253-ab9ed3cc0649",
+                                1
+                            ]
+                        ],
+                        [
+                            [
+                                "f6b99f67-e0d9-4546-9e59-414c3fdd061e",
+                                1
+                            ],
+                            [
+                                "81172976-35c7-4b2f-aed4-cce3c51d03b1",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8",
+                                0.5
+                            ],
+                            [
+                                "dba56e2b-3138-4a04-8c4c-ae51e003392a",
+                                0.5
+                            ]
+                        ],
+                        [
+                            [
+                                "aefc943f-1f44-4431-9fac-3dc810d2dd14",
+                                0.5
+                            ],
+                            [
+                                "e9a0876d-01ae-4960-aa4b-919005179969",
+                                0.5
+                            ]
+                        ]
+                    ],
+                    "name": "Round 1",
+                    "date_de_debut": "2023-12-28",
+                    "date_de_fin": "2023-12-28"
+                },
+                {
+                    "tour": [
+                        [
+                            [
+                                "194e8b46-7201-4c7a-b0a8-887443c9f9ab",
+                                0
+                            ],
+                            [
+                                "f6b99f67-e0d9-4546-9e59-414c3fdd061e",
+                                1
+                            ]
+                        ],
+                        [
+                            [
+                                "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e",
+                                1
+                            ],
+                            [
+                                "e325a6f6-c722-4b85-b253-ab9ed3cc0649",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "dba56e2b-3138-4a04-8c4c-ae51e003392a",
+                                0
+                            ],
+                            [
+                                "e9a0876d-01ae-4960-aa4b-919005179969",
+                                1
+                            ]
+                        ],
+                        [
+                            [
+                                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8",
+                                0.5
+                            ],
+                            [
+                                "aefc943f-1f44-4431-9fac-3dc810d2dd14",
+                                0.5
+                            ]
+                        ],
+                        [
+                            [
+                                "fde0e076-9018-4cd8-be05-431fe1bb4779",
+                                0.5
+                            ],
+                            [
+                                "81172976-35c7-4b2f-aed4-cce3c51d03b1",
+                                0.5
+                            ]
+                        ],
+                        [
+                            [
+                                "50661466-7f90-4165-9e99-6d9d81391a74",
+                                0
+                            ],
+                            [
+                                "5d0c1f34-2395-41ea-a610-753511709c0b",
+                                1
+                            ]
+                        ]
+                    ],
+                    "name": "Round 2",
+                    "date_de_debut": "2023-12-28",
+                    "date_de_fin": "2023-12-28"
+                }
+            ],
             "liste_de_joueur": [
                 {
                     "nom": "Dupont",
                     "prenom": "Jean",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1985-05-12",
                     "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
                 },
                 {
                     "nom": "Martin",
                     "prenom": "Sophie",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1990-09-28",
                     "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
                 },
                 {
                     "nom": "Lefebvre",
                     "prenom": "Marie",
-                    "score": 0,
+                    "score": 1.5,
                     "date_de_naissance": "1988-03-15",
                     "id": "e9a0876d-01ae-4960-aa4b-919005179969"
                 },
                 {
                     "nom": "Dubois",
                     "prenom": "Pierre",
-                    "score": 2,
+                    "score": 12,
                     "date_de_naissance": "1995-11-02",
                     "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
                 },
                 {
                     "nom": "Beauchamp",
                     "prenom": "Isabelle",
-                    "score": 2,
+                    "score": 10,
                     "date_de_naissance": "1982-07-20",
                     "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
                 },
                 {
                     "nom": "Gagnon",
                     "prenom": "Luc",
-                    "score": 0,
+                    "score": 2,
                     "date_de_naissance": "1993-04-04",
                     "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
                 },
                 {
                     "nom": "Roy",
                     "prenom": "Melissa",
-                    "score": 1,
+                    "score": 5.5,
                     "date_de_naissance": "1987-06-30",
                     "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
                 },
                 {
                     "nom": "Tremblay",
                     "prenom": "Eric",
-                    "score": 1,
+                    "score": 4,
                     "date_de_naissance": "1991-02-18",
                     "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
                 },
                 {
                     "nom": "Sinya",
                     "prenom": "Meha",
-                    "score": 1,
+                    "score": 8.5,
                     "date_de_naissance": "1991-02-18",
                     "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
                 },
                 {
                     "nom": "Yassin",
                     "prenom": "Mou",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1991-02-18",
                     "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
                 },
                 {
                     "nom": "Bouzoubaa",
                     "prenom": "Kassim",
-                    "score": 0,
+                    "score": 3,
                     "date_de_naissance": "1998-02-25",
                     "id": "50661466-7f90-4165-9e99-6d9d81391a74"
                 },
                 {
                     "nom": "Jdaini",
                     "prenom": "Sami",
-                    "score": 2,
+                    "score": 10.5,
                     "date_de_naissance": "2000-02-10",
                     "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
                 }
             ],
-            "date_de_debut": "2023-11-08",
-            "date_de_fin": null,
+            "date_de_debut": "2023-12-28",
+            "date_de_fin": "2023-12-28",
             "id": "2f3276b4-c990-4eec-9d04-753b5a2386c2"
         },
         {
@@ -196,84 +344,84 @@
                 {
                     "nom": "Dupont",
                     "prenom": "Jean",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1985-05-12",
                     "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
                 },
                 {
                     "nom": "Martin",
                     "prenom": "Sophie",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1990-09-28",
                     "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
                 },
                 {
                     "nom": "Lefebvre",
                     "prenom": "Marie",
-                    "score": 0,
+                    "score": 1.5,
                     "date_de_naissance": "1988-03-15",
                     "id": "e9a0876d-01ae-4960-aa4b-919005179969"
                 },
                 {
                     "nom": "Dubois",
                     "prenom": "Pierre",
-                    "score": 2,
+                    "score": 12,
                     "date_de_naissance": "1995-11-02",
                     "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
                 },
                 {
                     "nom": "Beauchamp",
                     "prenom": "Isabelle",
-                    "score": 2,
+                    "score": 10,
                     "date_de_naissance": "1982-07-20",
                     "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
                 },
                 {
                     "nom": "Gagnon",
                     "prenom": "Luc",
-                    "score": 0,
+                    "score": 2,
                     "date_de_naissance": "1993-04-04",
                     "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
                 },
                 {
                     "nom": "Roy",
                     "prenom": "Melissa",
-                    "score": 1,
+                    "score": 5.5,
                     "date_de_naissance": "1987-06-30",
                     "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
                 },
                 {
                     "nom": "Tremblay",
                     "prenom": "Eric",
-                    "score": 1,
+                    "score": 4,
                     "date_de_naissance": "1991-02-18",
                     "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
                 },
                 {
                     "nom": "Sinya",
                     "prenom": "Meha",
-                    "score": 1,
+                    "score": 8.5,
                     "date_de_naissance": "1991-02-18",
                     "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
                 },
                 {
                     "nom": "Yassin",
                     "prenom": "Mou",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1991-02-18",
                     "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
                 },
                 {
                     "nom": "Bouzoubaa",
                     "prenom": "Kassim",
-                    "score": 0,
+                    "score": 3,
                     "date_de_naissance": "1998-02-25",
                     "id": "50661466-7f90-4165-9e99-6d9d81391a74"
                 },
                 {
                     "nom": "Jdaini",
                     "prenom": "Sami",
-                    "score": 2,
+                    "score": 10.5,
                     "date_de_naissance": "2000-02-10",
                     "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
                 }
@@ -287,20 +435,20 @@
             "lieu": "monaco",
             "description": "Troisieme tournoi",
             "nombre_de_tours": 4,
-            "tour_actuel": 12,
+            "tour_actuel": 13,
             "score_par_joueur": {
-                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8": 1,
-                "5d0c1f34-2395-41ea-a610-753511709c0b": 2,
+                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8": 3,
+                "5d0c1f34-2395-41ea-a610-753511709c0b": 4.0,
                 "e325a6f6-c722-4b85-b253-ab9ed3cc0649": 1,
                 "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e": 0,
-                "dba56e2b-3138-4a04-8c4c-ae51e003392a": 1,
-                "81172976-35c7-4b2f-aed4-cce3c51d03b1": 1,
-                "f6b99f67-e0d9-4546-9e59-414c3fdd061e": 2,
-                "194e8b46-7201-4c7a-b0a8-887443c9f9ab": 2,
-                "aefc943f-1f44-4431-9fac-3dc810d2dd14": 1,
-                "fde0e076-9018-4cd8-be05-431fe1bb4779": 1,
+                "dba56e2b-3138-4a04-8c4c-ae51e003392a": 3.0,
+                "81172976-35c7-4b2f-aed4-cce3c51d03b1": 4,
+                "f6b99f67-e0d9-4546-9e59-414c3fdd061e": 3,
+                "194e8b46-7201-4c7a-b0a8-887443c9f9ab": 5,
+                "aefc943f-1f44-4431-9fac-3dc810d2dd14": 3,
+                "fde0e076-9018-4cd8-be05-431fe1bb4779": 2,
                 "e9a0876d-01ae-4960-aa4b-919005179969": 0,
-                "50661466-7f90-4165-9e99-6d9d81391a74": 0
+                "50661466-7f90-4165-9e99-6d9d81391a74": 2
             },
             "liste_de_tour": [
                 {
@@ -495,404 +643,166 @@
                     ],
                     "name": "Round 12",
                     "date_de_debut": "2023-12-26",
-                    "date_de_fin": null
+                    "date_de_fin": "2023-12-27"
+                },
+                {
+                    "tour": [
+                        [
+                            [
+                                "194e8b46-7201-4c7a-b0a8-887443c9f9ab",
+                                1
+                            ],
+                            [
+                                "f6b99f67-e0d9-4546-9e59-414c3fdd061e",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "5d0c1f34-2395-41ea-a610-753511709c0b",
+                                0.5
+                            ],
+                            [
+                                "dba56e2b-3138-4a04-8c4c-ae51e003392a",
+                                0.5
+                            ]
+                        ],
+                        [
+                            [
+                                "fde0e076-9018-4cd8-be05-431fe1bb4779",
+                                0
+                            ],
+                            [
+                                "81172976-35c7-4b2f-aed4-cce3c51d03b1",
+                                1
+                            ]
+                        ],
+                        [
+                            [
+                                "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8",
+                                1
+                            ],
+                            [
+                                "e325a6f6-c722-4b85-b253-ab9ed3cc0649",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "aefc943f-1f44-4431-9fac-3dc810d2dd14",
+                                1
+                            ],
+                            [
+                                "e9a0876d-01ae-4960-aa4b-919005179969",
+                                0
+                            ]
+                        ],
+                        [
+                            [
+                                "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e",
+                                0
+                            ],
+                            [
+                                "50661466-7f90-4165-9e99-6d9d81391a74",
+                                1
+                            ]
+                        ]
+                    ],
+                    "name": "Round 13",
+                    "date_de_debut": "2023-12-27",
+                    "date_de_fin": "2023-12-27"
                 }
             ],
             "liste_de_joueur": [
                 {
                     "nom": "Dupont",
                     "prenom": "Jean",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1985-05-12",
                     "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
                 },
                 {
                     "nom": "Martin",
                     "prenom": "Sophie",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1990-09-28",
                     "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
                 },
                 {
                     "nom": "Lefebvre",
                     "prenom": "Marie",
-                    "score": 0,
+                    "score": 1.5,
                     "date_de_naissance": "1988-03-15",
                     "id": "e9a0876d-01ae-4960-aa4b-919005179969"
                 },
                 {
                     "nom": "Dubois",
                     "prenom": "Pierre",
-                    "score": 2,
+                    "score": 12,
                     "date_de_naissance": "1995-11-02",
                     "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
                 },
                 {
                     "nom": "Beauchamp",
                     "prenom": "Isabelle",
-                    "score": 2,
+                    "score": 10,
                     "date_de_naissance": "1982-07-20",
                     "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
                 },
                 {
                     "nom": "Gagnon",
                     "prenom": "Luc",
-                    "score": 0,
+                    "score": 2,
                     "date_de_naissance": "1993-04-04",
                     "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
                 },
                 {
                     "nom": "Roy",
                     "prenom": "Melissa",
-                    "score": 1,
+                    "score": 5.5,
                     "date_de_naissance": "1987-06-30",
                     "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
                 },
                 {
                     "nom": "Tremblay",
                     "prenom": "Eric",
-                    "score": 1,
+                    "score": 4,
                     "date_de_naissance": "1991-02-18",
                     "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
                 },
                 {
                     "nom": "Sinya",
                     "prenom": "Meha",
-                    "score": 1,
+                    "score": 8.5,
                     "date_de_naissance": "1991-02-18",
                     "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
                 },
                 {
                     "nom": "Yassin",
                     "prenom": "Mou",
-                    "score": 1,
+                    "score": 7.0,
                     "date_de_naissance": "1991-02-18",
                     "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
                 },
                 {
                     "nom": "Bouzoubaa",
                     "prenom": "Kassim",
-                    "score": 0,
+                    "score": 3,
                     "date_de_naissance": "1998-02-25",
                     "id": "50661466-7f90-4165-9e99-6d9d81391a74"
                 },
                 {
                     "nom": "Jdaini",
                     "prenom": "Sami",
-                    "score": 2,
+                    "score": 10.5,
                     "date_de_naissance": "2000-02-10",
                     "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
                 }
             ],
             "date_de_debut": "2023-12-26",
-            "date_de_fin": "2023-12-26",
+            "date_de_fin": "2023-12-27",
             "id": "957a1cb7-3b3c-4bd5-b9e7-5eeb080201e9"
         }
     ],
-    "tournoi_en_cours": {
-        "nom": "Troisieme tournoi",
-        "lieu": "monaco",
-        "description": "Troisieme tournoi",
-        "nombre_de_tours": 4,
-        "tour_actuel": 12,
-        "score_par_joueur": {
-            "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8": 1,
-            "5d0c1f34-2395-41ea-a610-753511709c0b": 2,
-            "e325a6f6-c722-4b85-b253-ab9ed3cc0649": 1,
-            "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e": 0,
-            "dba56e2b-3138-4a04-8c4c-ae51e003392a": 1,
-            "81172976-35c7-4b2f-aed4-cce3c51d03b1": 1,
-            "f6b99f67-e0d9-4546-9e59-414c3fdd061e": 2,
-            "194e8b46-7201-4c7a-b0a8-887443c9f9ab": 2,
-            "aefc943f-1f44-4431-9fac-3dc810d2dd14": 1,
-            "fde0e076-9018-4cd8-be05-431fe1bb4779": 1,
-            "e9a0876d-01ae-4960-aa4b-919005179969": 0,
-            "50661466-7f90-4165-9e99-6d9d81391a74": 0
-        },
-        "liste_de_tour": [
-            {
-                "tour": [],
-                "name": "Round 1",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 2",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 3",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 4",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 5",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 6",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 7",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 8",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 9",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [],
-                "name": "Round 10",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [
-                    [
-                        [
-                            "dba56e2b-3138-4a04-8c4c-ae51e003392a",
-                            0
-                        ],
-                        [
-                            "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "e9a0876d-01ae-4960-aa4b-919005179969",
-                            0
-                        ],
-                        [
-                            "194e8b46-7201-4c7a-b0a8-887443c9f9ab",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "f6b99f67-e0d9-4546-9e59-414c3fdd061e",
-                            0
-                        ],
-                        [
-                            "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "fde0e076-9018-4cd8-be05-431fe1bb4779",
-                            0
-                        ],
-                        [
-                            "e325a6f6-c722-4b85-b253-ab9ed3cc0649",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "81172976-35c7-4b2f-aed4-cce3c51d03b1",
-                            0
-                        ],
-                        [
-                            "aefc943f-1f44-4431-9fac-3dc810d2dd14",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "50661466-7f90-4165-9e99-6d9d81391a74",
-                            0
-                        ],
-                        [
-                            "5d0c1f34-2395-41ea-a610-753511709c0b",
-                            0
-                        ]
-                    ]
-                ],
-                "name": "Round 11",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": "2023-12-26"
-            },
-            {
-                "tour": [
-                    [
-                        [
-                            "dba56e2b-3138-4a04-8c4c-ae51e003392a",
-                            1
-                        ],
-                        [
-                            "194e8b46-7201-4c7a-b0a8-887443c9f9ab",
-                            1
-                        ]
-                    ],
-                    [
-                        [
-                            "f6b99f67-e0d9-4546-9e59-414c3fdd061e",
-                            1
-                        ],
-                        [
-                            "fde0e076-9018-4cd8-be05-431fe1bb4779",
-                            1
-                        ]
-                    ],
-                    [
-                        [
-                            "81172976-35c7-4b2f-aed4-cce3c51d03b1",
-                            1
-                        ],
-                        [
-                            "5d0c1f34-2395-41ea-a610-753511709c0b",
-                            1
-                        ]
-                    ],
-                    [
-                        [
-                            "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8",
-                            0
-                        ],
-                        [
-                            "e9a0876d-01ae-4960-aa4b-919005179969",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e",
-                            0
-                        ],
-                        [
-                            "e325a6f6-c722-4b85-b253-ab9ed3cc0649",
-                            0
-                        ]
-                    ],
-                    [
-                        [
-                            "aefc943f-1f44-4431-9fac-3dc810d2dd14",
-                            0
-                        ],
-                        [
-                            "50661466-7f90-4165-9e99-6d9d81391a74",
-                            0
-                        ]
-                    ]
-                ],
-                "name": "Round 12",
-                "date_de_debut": "2023-12-26",
-                "date_de_fin": null
-            }
-        ],
-        "liste_de_joueur": [
-            {
-                "nom": "Dupont",
-                "prenom": "Jean",
-                "score": 1,
-                "date_de_naissance": "1985-05-12",
-                "id": "dba56e2b-3138-4a04-8c4c-ae51e003392a"
-            },
-            {
-                "nom": "Martin",
-                "prenom": "Sophie",
-                "score": 1,
-                "date_de_naissance": "1990-09-28",
-                "id": "a20a34a7-fd7c-4da4-9fa7-1d9cab05d7f8"
-            },
-            {
-                "nom": "Lefebvre",
-                "prenom": "Marie",
-                "score": 0,
-                "date_de_naissance": "1988-03-15",
-                "id": "e9a0876d-01ae-4960-aa4b-919005179969"
-            },
-            {
-                "nom": "Dubois",
-                "prenom": "Pierre",
-                "score": 2,
-                "date_de_naissance": "1995-11-02",
-                "id": "194e8b46-7201-4c7a-b0a8-887443c9f9ab"
-            },
-            {
-                "nom": "Beauchamp",
-                "prenom": "Isabelle",
-                "score": 2,
-                "date_de_naissance": "1982-07-20",
-                "id": "f6b99f67-e0d9-4546-9e59-414c3fdd061e"
-            },
-            {
-                "nom": "Gagnon",
-                "prenom": "Luc",
-                "score": 0,
-                "date_de_naissance": "1993-04-04",
-                "id": "5d29f3b1-92fc-46ae-87b1-49e0a6f5b58e"
-            },
-            {
-                "nom": "Roy",
-                "prenom": "Melissa",
-                "score": 1,
-                "date_de_naissance": "1987-06-30",
-                "id": "fde0e076-9018-4cd8-be05-431fe1bb4779"
-            },
-            {
-                "nom": "Tremblay",
-                "prenom": "Eric",
-                "score": 1,
-                "date_de_naissance": "1991-02-18",
-                "id": "e325a6f6-c722-4b85-b253-ab9ed3cc0649"
-            },
-            {
-                "nom": "Sinya",
-                "prenom": "Meha",
-                "score": 1,
-                "date_de_naissance": "1991-02-18",
-                "id": "81172976-35c7-4b2f-aed4-cce3c51d03b1"
-            },
-            {
-                "nom": "Yassin",
-                "prenom": "Mou",
-                "score": 1,
-                "date_de_naissance": "1991-02-18",
-                "id": "aefc943f-1f44-4431-9fac-3dc810d2dd14"
-            },
-            {
-                "nom": "Bouzoubaa",
-                "prenom": "Kassim",
-                "score": 0,
-                "date_de_naissance": "1998-02-25",
-                "id": "50661466-7f90-4165-9e99-6d9d81391a74"
-            },
-            {
-                "nom": "Jdaini",
-                "prenom": "Sami",
-                "score": 2,
-                "date_de_naissance": "2000-02-10",
-                "id": "5d0c1f34-2395-41ea-a610-753511709c0b"
-            }
-        ],
-        "date_de_debut": "2023-12-26",
-        "date_de_fin": "2023-12-26",
-        "id": "957a1cb7-3b3c-4bd5-b9e7-5eeb080201e9"
-    }
+    "tournoi_en_cours": null
 }

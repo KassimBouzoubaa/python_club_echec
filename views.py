@@ -1,7 +1,4 @@
-from datetime import date
-from typing import List, Dict, Any
-
-from models import Tournoi
+from typing import List, Dict
 
 
 class View:
@@ -19,20 +16,23 @@ class View:
                     return choice
                 else:
                     print(
-                        "Choix invalide. Veuillez entrez un nombre entre 1 et ",
+                        "Choix invalide. Veuillez entrez un nombre"
+                        " entre 1 et ",
                         len(choices),
                     )
             except ValueError:
                 print("Saisie invalide. Veuillez entrer un nombre.")
 
-    def get_user_input(self, champs: List[str], message: str) -> Dict[str, str]:
+    def get_user_input(self, champs: List[str], message: str) ->\
+            Dict[str, str]:
         """Prompt pour ajouter des joueurs"""
         print(message)
         inputs = {}
         for champ in champs:
             while True:
                 valeur = input(f"Entrez {champ} : ")
-                if valeur.strip():  # Vérifie que la valeur n'est pas vide ou composée uniquement d'espaces
+                if valeur.strip():  # Vérifie que la valeur n'est pas
+                    # vide ou composée uniquement d'espaces
                     inputs[champ] = valeur
                     break
                 else:

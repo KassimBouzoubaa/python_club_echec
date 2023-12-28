@@ -1,12 +1,12 @@
 """Définition des controllers"""
 from dataclasses import dataclass, field
 from operator import attrgetter
-from typing import List, Optional, Dict
+from typing import Optional, Dict
 import json
 
 from models import Joueur, Tournoi
 from views import View
-from datetime import datetime, date
+from datetime import date
 
 main_menu_choices = [
     "Tournois en cours",
@@ -25,25 +25,29 @@ class ControllerState:
 
     @classmethod
     def from_json(cls, filepath: str):
-        """Sérialise les information de mon state (joueurs, tournois, tournoi_en_cours
-        pour les récupérer du JSON sous la forme d'un dictionnaire avec les ids
-        en clé et les objets en valeur.
+        """Sérialise les information de mon state (joueurs, tournois,
+        tournoi_en_cours pour les récupérer du JSON sous la forme
+        d'un dictionnaire avec les ids en clé et les objets en valeur.
         """
         with open(filepath, "r") as f:
             donnees = json.load(f)
 
-        joueurs = [Joueur.from_dict(data) for data in donnees["liste_de_joueurs"]]
+        joueurs = [
+            Joueur.from_dict(data) for data in donnees["liste_de_joueurs"]
+        ]
         joueurs_dict = {joueur.id: joueur for joueur in joueurs}
 
         tournois = [
-            Tournoi.from_dict(data,joueurs, joueurs_dict)
+            Tournoi.from_dict(data, joueurs, joueurs_dict)
             for data in donnees["liste_de_tournoi"]
         ]
         tournois_dict = {tournoi.id: tournoi for tournoi in tournois}
 
-        tournoi_en_cours = tournois_dict.get(
-            donnees["tournoi_en_cours"]["id"]
-        ) if donnees and donnees["tournoi_en_cours"] is not None else None
+        tournoi_en_cours = (
+            tournois_dict.get(donnees["tournoi_en_cours"]["id"])
+            if donnees and donnees["tournoi_en_cours"] is not None
+            else None
+        )
 
         return ControllerState(
             joueurs=joueurs_dict,
@@ -55,8 +59,12 @@ class ControllerState:
         """Sérialise les information de mon state (joueurs, tournois)
         pour les enregistrer dans le JSON en tant que liste de dictionnaire.
         """
-        joueurs_serialized = [joueur.to_dict() for joueur in self.joueurs.values()]
-        tournois_serialized = [tournoi.to_dict() for tournoi in self.tournois.values()]
+        joueurs_serialized = [
+            joueur.to_dict() for joueur in self.joueurs.values()
+        ]
+        tournois_serialized = [
+            tournoi.to_dict() for tournoi in self.tournois.values()
+        ]
         tournoi_en_cours = (
             self.tournoi_en_cours.to_dict()
             if self.tournoi_en_cours is not None
@@ -72,7 +80,11 @@ class ControllerState:
             with open(filepath, "w") as f:
                 json.dump(donnees, f, indent=4)
         except Exception as e:
-            print("Une erreur s'est produite lors de la sauvegarde des données :", e)
+            print(
+                "Une erreur s'est produite lors de"
+                "la sauvegarde des données :",
+                e,
+            )
 
 
 class Controller:
@@ -134,13 +146,15 @@ class Controller:
                         "Finir le tournoi",
                         "Retour",
                     ],
-                    "Tournoi en cour",
+                    f"Tournoi en cour, tour: "
+                    f"{self.state.tournoi_en_cours.tour_actuel}",
                 )
                 if choice == 1:
                     self.entrer_resultats_du_tour()
                     self.menu_tournoi_en_cours()
                 elif choice == 2:
                     self.state.tournoi_en_cours.passer_tour_suivant()
+                    self.save()
                     self.menu_tournoi_en_cours()
                 elif choice == 3:
                     self.terminer_tournoi()
@@ -205,7 +219,8 @@ class Controller:
                 "Liste de tout les tournois",
                 "Nom et date d'un tournoi donné",
                 "Liste des joueurs d'un tournoi par ordre alphabétique",
-                "Liste de tous les tours du tournoi et de tous les matchs du tour",
+                "Liste de tous les tours du tournoi et"
+                " de tous les matchs du tour",
                 "Retour",
             ],
             "Menu rapport",
@@ -243,7 +258,9 @@ class Controller:
         )
         tournoi = None
         while tournoi is None:
-            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_tournoi = self.view.get_user_input(
+                ["Id du tournoi"], message=message
+            )
             id = id_tournoi["Id du tournoi"]
 
             tournoi = self.state.tournois.get(id)
@@ -256,17 +273,21 @@ class Controller:
         for match in self.state.tournoi_en_cours.liste_de_tour[
             self.state.tournoi_en_cours.tour_actuel - 1
         ].tour:
-            message = f"Quel est le resultat du match : {match[0][0].prenom} contre {match[1][0].prenom}"
-            champ_resultat = [match[0][0].prenom, match[1][0].prenom, "Match nul"]
+            message = (f"Quel est le resultat du match : "
+                       f"{match[0][0].prenom} contre {match[1][0].prenom}")
+            champ_resultat = [
+                match[0][0].prenom,
+                match[1][0].prenom,
+                "Match nul",
+            ]
             input_resultat = self.view.display_menu(champ_resultat, message)
             if input_resultat == 1:
-                self.state.tournoi_en_cours.score_par_joueur[match[0][0].id] += 1
+                match[0][1] = 1
             elif input_resultat == 2:
-                self.state.tournoi_en_cours.score_par_joueur[match[1][0].id] += 1
+                match[1][1] = 1
             elif input_resultat == 3:
-                self.state.tournoi_en_cours.score_par_joueur[match[0][0].id] += 0.5
-                self.state.tournoi_en_cours.score_par_joueur[match[1][0].id] += 0.5
-
+                match[0][1] = 0.5
+                match[1][1] = 0.5
         self.save()
 
     def terminer_tournoi(self):
@@ -274,7 +295,9 @@ class Controller:
 
         self.state.tournoi_en_cours.terminer()
         for joueur in self.state.tournoi_en_cours.liste_de_joueur:
-            joueur.score += self.state.tournoi_en_cours.score_par_joueur[joueur.id]
+            self.state.joueurs[
+                joueur.id
+            ].score += self.state.tournoi_en_cours.score_par_joueur[joueur.id]
         self.state.tournois[
             self.state.tournoi_en_cours.id
         ] = self.state.tournoi_en_cours
@@ -306,26 +329,34 @@ class Controller:
 
         id_tournoi = None
         while id_tournoi is None:
-            id_input = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_input = self.view.get_user_input(
+                ["Id du tournoi"], message=message
+            )
             id_tournoi = id_input["Id du tournoi"]
             if id_tournoi not in [
                 tournoi.id for tournoi in self.state.tournois.values()
             ]:
-                self.view.simple_log("L'id du tournoi n'existe pas, veuillez ressayer.")
+                self.view.simple_log(
+                    "L'id du tournoi n'existe pas, veuillez ressayer."
+                )
                 return
 
         champs = ["nom, lieu ou description"]
 
-        valeur_champ = self.view.get_user_input(champs, "Que souhaitez-vous modifier ?")
+        valeur_champ = self.view.get_user_input(
+            champs, "Que souhaitez-vous modifier ?"
+        )
         champ = valeur_champ["nom, lieu ou description"]
         if champ not in ["nom", "lieu", "description"]:
             self.view.simple_log(
-                "Erreur de format. Assurez-vous d'entrer la valeur correctement."
+                "Erreur de format. Assurez-vous d'entrer "
+                "la valeur correctement."
             )
             return
 
         valeur = self.view.get_user_input(
-            [champ], f"Entrez la nouvelle valeur pour {champ.capitalize()}"
+            [champ], f"Entrez la nouvelle valeur pour"
+                     f" {champ.capitalize()}"
         )
 
         for tournoi in self.state.tournois.values():
@@ -357,13 +388,16 @@ class Controller:
         )
         tournoi = None
         while tournoi is None:
-            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_tournoi = self.view.get_user_input(
+                ["Id du tournoi"], message=message
+            )
             id = id_tournoi["Id du tournoi"]
 
             tournoi = self.state.tournois.get(id)
 
         self.view.simple_log(
-            f"nom: {tournoi.nom}\ndate de debut: {tournoi.date_de_debut}\ndate de fin: {tournoi.date_de_fin}"
+            f"nom: {tournoi.nom}\ndate de debut: {tournoi.date_de_debut}"
+            f"\ndate de fin: {tournoi.date_de_fin}"
         )
 
     def get_joueurs_par_tournoi(self):
@@ -377,7 +411,9 @@ class Controller:
         )
         tournoi = None
         while tournoi is None:
-            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_tournoi = self.view.get_user_input(
+                ["Id du tournoi"], message=message
+            )
             id = id_tournoi["Id du tournoi"]
             tournoi = self.state.tournois.get(id)
 
@@ -385,7 +421,9 @@ class Controller:
 
         self.view.simple_log("Liste des joueurs : ")
         for joueur in joueurs_tries:
-            self.view.simple_log(joueur.to_dict())
+            self.view.simple_log(joueur.nom + " " + joueur.prenom
+                                 + " score: " +
+                                 str(tournoi.score_par_joueur[joueur.id]))
 
     def get_tours_matchs_par_tournoi(self):
         """Récupère les tours et les matchs d'un tournoi"""
@@ -398,7 +436,9 @@ class Controller:
         )
         tournoi = None
         while tournoi is None:
-            id_tournoi = self.view.get_user_input(["Id du tournoi"], message=message)
+            id_tournoi = self.view.get_user_input(
+                ["Id du tournoi"], message=message
+            )
             id = id_tournoi["Id du tournoi"]
             tournoi = self.state.tournois.get(id)
 
@@ -406,10 +446,11 @@ class Controller:
 
         for tour in tournoi.liste_de_tour:
             self.view.simple_log(tour.name)
-            self.view.simple_log(tour)
-            self.view.simple_log("Liste des matchs")
+            self.view.simple_log("Liste des matchs :")
             for match in tour.tour:
-                self.view.simple_log(match)
+                self.view.simple_log(
+                    match[0][0].prenom + " contre " + match[1][0].prenom
+                )
 
     # ----------------------------
     # Joueurs functions
@@ -427,14 +468,17 @@ class Controller:
                 valeurs_joueur["date de naissance (YYYY-MM-DD)"]
             )
             joueur = Joueur(
-                valeurs_joueur["nom"], valeurs_joueur["prenom"], date_de_naissance
+                valeurs_joueur["nom"],
+                valeurs_joueur["prenom"],
+                date_de_naissance,
             )
 
             self.state.joueurs[joueur.id] = joueur
 
         except ValueError:
             self.view.simple_log(
-                "Erreur de format. Assurez-vous d'entrer la valeur correctement."
+                "Erreur de format. Assurez-vous d'entrer "
+                "la valeur correctement."
             )
 
             self.ajouter_joueur()
@@ -451,7 +495,9 @@ class Controller:
         )
         id = None
         while id is None:
-            id_joueur = self.view.get_user_input(["Id du joueur"], message=message)
+            id_joueur = self.view.get_user_input(
+                ["Id du joueur"], message=message
+            )
             id = id_joueur["Id du joueur"]
 
             for joueur in self.state.joueurs.values():
@@ -472,11 +518,15 @@ class Controller:
 
         id_joueur = None
         while id_joueur is None:
-            id_input = self.view.get_user_input(["Id du joueur"], message=message)
+            id_input = self.view.get_user_input(
+                ["Id du joueur"], message=message
+            )
             id_joueur = id_input["Id du joueur"]
 
         champs = ["nom, prenom ou date de naissance"]
-        valeur_champ = self.view.get_user_input(champs, "Que souhaitez-vous modifier ?")
+        valeur_champ = self.view.get_user_input(
+            champs, "Que souhaitez-vous modifier ?"
+        )
         champ = valeur_champ["nom, prenom ou date de naissance"]
         valeur = self.view.get_user_input(
             [champ], f"Entrez la nouvelle valeur pour {champ.capitalize()}"
@@ -499,16 +549,18 @@ class Controller:
         self.view.simple_log("Liste des joueurs : ")
 
         for joueur in self.state.joueurs.values():
-            self.view.simple_log(joueur.to_dict())
+            self.view.simple_log(joueur.nom + " " + joueur.prenom)
 
     def liste_joueurs_trier(self):
         """Récupère tout les joueurs et les tri par ordre alphabétique"""
 
-        joueurs_tries = sorted(self.state.joueurs.values(), key=attrgetter("nom"))
+        joueurs_tries = sorted(
+            self.state.joueurs.values(), key=attrgetter("nom")
+        )
 
         self.view.simple_log("Liste des joueurs : ")
         for joueur in joueurs_tries:
-            self.view.simple_log(joueur.to_dict())
+            self.view.simple_log(joueur.nom + " " + joueur.prenom)
 
     # ----------------------------
     # Others functions

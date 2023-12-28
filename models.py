@@ -47,7 +47,7 @@ class Tour:
 
     tour: List[Match]
     name: str
-    date_de_debut: date =  datetime.now().date()
+    date_de_debut: date = datetime.now().date()
     date_de_fin: Optional[date] = None
 
     def to_dict(self):
@@ -116,7 +116,9 @@ class Tournoi:
             "tour_actuel": self.tour_actuel,
             "score_par_joueur": self.score_par_joueur,
             "liste_de_tour": [tour.to_dict() for tour in self.liste_de_tour],
-            "liste_de_joueur": [joueur.to_dict() for joueur in self.liste_de_joueur],
+            "liste_de_joueur": [
+                joueur.to_dict() for joueur in self.liste_de_joueur
+            ],
             "date_de_debut": self.date_de_debut.isoformat()
             if self.date_de_debut is not None
             else None,
@@ -128,7 +130,6 @@ class Tournoi:
 
     @classmethod
     def from_dict(cls, donnee, joueurs, joueurs_dict):
-
         return Tournoi(
             nom=donnee["nom"],
             lieu=donnee["lieu"],
@@ -137,7 +138,8 @@ class Tournoi:
             tour_actuel=donnee["tour_actuel"],
             score_par_joueur=donnee["score_par_joueur"],
             liste_de_tour=[
-                Tour.from_dict(tour, joueurs_dict) for tour in donnee["liste_de_tour"]
+                Tour.from_dict(tour, joueurs_dict)
+                for tour in donnee["liste_de_tour"]
             ],
             liste_de_joueur=joueurs,
             date_de_debut=date.fromisoformat(donnee["date_de_debut"])
@@ -154,48 +156,40 @@ class Tournoi:
 
         joueurs = self.melanger_joueurs()
 
-        if self.tour_actuel == 1:
-            for joueur in joueurs:
-                self.score_par_joueur[joueur.id] = 0
-
         matchs = []
 
         while len(joueurs) >= 2:  # Tant qu'il reste au moins deux joueurs
             joueur1 = joueurs.pop(0)  # Retire le premier joueur de la liste
-            score_joueur1 = self.score_par_joueur[joueur1.id]
-
-            print(joueur1)
 
             index = 0
-            joueur2_trouve = False
             joueur2 = None
-            score_joueur2 = None
 
             while index < len(joueurs):
                 if not self.match_existe_deja(joueur1, joueurs[index]):
                     joueur2 = joueurs.pop(
                         index
                     )  # Utilise le joueur trouvé comme joueur 2
-                    score_joueur2 = self.score_par_joueur[joueur2.id]
-                    joueur2_trouve = True
                     break
                 index += 1  # Passe au joueur suivant dans la liste
 
+            if joueur2 is None:
+                joueur2 = joueurs.pop(random.randrange(len(joueurs)))
+
             # Création de la paire de joueurs avec leurs scores
-            print("joueur2")
-            match = ([joueur1, score_joueur1], [joueur2, score_joueur2])
+            match = ([joueur1, 0], [joueur2, 0])
             matchs.append(match)
 
         return matchs
 
     def generer_tour(self):
         matchs = self.generation_de_paire()
-        print('match', matchs)
         tour = Tour(matchs, f"Round {self.tour_actuel}")
         self.liste_de_tour.append(tour)
 
     def demarrer(self):
         if self.tour_actuel == 0:
+            for joueur in self.liste_de_joueur:
+                self.score_par_joueur[joueur.id] = 0
             self.tour_actuel += 1
             self.date_de_debut = datetime.now().date()
             self.generer_tour()
@@ -221,15 +215,27 @@ class Tournoi:
             joueurs_tries = sorted(
                 self.liste_de_joueur,
                 key=lambda joueur: self.score_par_joueur.get(joueur.id, 0),
-                reverse=True,  # Tri décroissant pour le score le plus élevé en premier
+                reverse=True,  # Tri décroissant pour
+                # le score le plus élevé en premier
             )
 
         return joueurs_tries
 
     def passer_tour_suivant(self):
-        self.liste_de_tour[self.tour_actuel - 1].date_de_fin = datetime.now().date()
+        self.terminer_tour()
         self.tour_actuel += 1
         self.generer_tour()
 
+    def terminer_tour(self):
+        self.liste_de_tour[
+            self.tour_actuel - 1
+        ].date_de_fin = datetime.now().date()
+        for match in self.liste_de_tour[self.tour_actuel - 1].tour:
+            joueur1, score1 = match[0]
+            joueur2, score2 = match[1]
+            self.score_par_joueur[joueur1.id] += score1
+            self.score_par_joueur[joueur2.id] += score2
+
     def terminer(self):
+        self.terminer_tour()
         self.date_de_fin = datetime.now().date()
